@@ -5,8 +5,9 @@ import {
   Body,
   Param,
   Delete,
-  NotFoundException,
   HttpCode,
+  HttpStatus,
+  HttpException,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -19,7 +20,11 @@ export class UsersController {
 
   @Post()
   create(@Body() createUserDto: CreateUserDto) {
-    return this.usersService.create(createUserDto);
+    const groupId = createUserDto.groupId;
+    const user = createUserDto;
+    delete user.groupId;
+
+    return this.usersService.create(user, groupId);
   }
 
   @Get()
@@ -31,14 +36,20 @@ export class UsersController {
   async findOne(@Param('id') id: string) {
     const user = await this.usersService.findOne(id);
     if (!user) {
-      throw new NotFoundException();
+      throw new HttpException(
+        'User with this id does not exists',
+        HttpStatus.NOT_FOUND,
+      );
     }
     return user;
   }
 
   @Put(':id')
   async update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
-    return await this.usersService.update(id, updateUserDto);
+    const groupId = updateUserDto.groupId;
+    const user = updateUserDto;
+    delete user.groupId;
+    return await this.usersService.update(id, updateUserDto, groupId);
   }
 
   @Delete(':id')
@@ -46,7 +57,10 @@ export class UsersController {
   async remove(@Param('id') id: string) {
     const user = await this.usersService.remove(id);
     if (!user) {
-      throw new NotFoundException();
+      throw new HttpException(
+        'User with this id does not exists',
+        HttpStatus.NOT_FOUND,
+      );
     }
     return user;
   }

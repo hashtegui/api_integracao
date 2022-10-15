@@ -1,10 +1,8 @@
-import { Injectable } from '@nestjs/common';
-import { CreateUserDto } from './dto/create-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
+import { Injectable, HttpStatus, HttpException } from '@nestjs/common';
+import { CreateUserDto, UpdateUserDto } from './dto';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
-import { User, UserEntity } from './entities/user.entity';
-import { NotFoundException } from '@nestjs/common/exceptions';
+import { UserEntity } from './entities/user.entity';
 
 @Injectable()
 export class UsersService {
@@ -13,11 +11,15 @@ export class UsersService {
     private userRepository: Repository<UserEntity>,
   ) {}
 
-  create(createUserDto: CreateUserDto) {
-    return this.userRepository.save(createUserDto);
+  create(createUserDto: CreateUserDto, groupId: number) {
+    const user = this.userRepository.create({
+      ...createUserDto,
+      group: { id: groupId },
+    });
+    return this.userRepository.save(user);
   }
 
-  findAll(): Promise<User[]> {
+  findAll(): Promise<UserEntity[]> {
     return this.userRepository.find({ relations: { group: true } });
   }
 
@@ -32,14 +34,24 @@ export class UsersService {
     });
   }
 
-  async update(id: string, updateUserDto: UpdateUserDto) {
-    const user = await this.userRepository.findOneBy({ id: id });
+  async update(id: string, updateUserDto: UpdateUserDto, groupId: number) {
+    const user = await this.userRepository.findOne({
+      where: { id: id },
+      relations: ['group'],
+    });
     if (!user) {
-      throw new NotFoundException();
+      throw new HttpException(
+        'User with this id does not exists',
+        HttpStatus.NOT_FOUND,
+      );
     }
     Object.assign(user, updateUserDto);
+    user.group.id = groupId;
     await this.userRepository.save(user);
-    return user;
+    return await this.userRepository.findOne({
+      where: { id: user.id },
+      relations: ['group'],
+    });
   }
 
   async remove(id: string) {

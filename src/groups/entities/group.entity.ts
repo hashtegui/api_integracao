@@ -17,6 +17,6 @@ export class GroupEntity implements Group {
   description: string;
   @Column()
   local: string;
-  @OneToMany(() => UserEntity, (user) => user.group)
+  @OneToMany(() => UserEntity, (user) => user.group.id)
   users: UserEntity[];
 }

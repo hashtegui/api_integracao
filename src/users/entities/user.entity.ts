@@ -5,10 +5,10 @@ export interface User {
   id?: string;
   username: string;
   password: string;
-  group: { id?: number };
+  groupId: number;
 }
 @Entity({ name: 'users' })
-export class UserEntity implements User {
+export class UserEntity {
   constructor(props: User) {
     Object.assign(this, props);
   }
