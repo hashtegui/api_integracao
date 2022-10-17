@@ -6,6 +6,7 @@ export interface User {
   username: string;
   password: string;
   groupId: number;
+  active: boolean;
 }
 @Entity({ name: 'users' })
 export class UserEntity {
@@ -14,10 +15,12 @@ export class UserEntity {
   }
   @PrimaryGeneratedColumn('uuid')
   id?: string;
-  @Column()
+  @Column({ unique: true })
   username: string;
-  @Column()
+  @Column({ nullable: true, unique: true })
   password: string;
+  @Column({ default: true })
+  active?: boolean;
   @ManyToOne(() => GroupEntity, (group) => group.users)
   group: GroupEntity;
 }
