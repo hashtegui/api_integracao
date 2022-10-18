@@ -8,6 +8,10 @@ import { GroupsModule } from './groups/groups.module';
 import { GroupEntity } from './groups/entities/group.entity';
 import { Product } from './products/entities/product.entity';
 import { ProductsModule } from './products/products.module';
+import { EmbalagensModule } from './embalagens/embalagens.module';
+import { Embalagem } from './embalagens/entities/embalagem.entity';
+import { EstoqueModule } from './estoque/estoque.module';
+import { Estoque } from './estoque/entities/estoque.entity';
 
 @Module({
   imports: [
@@ -19,10 +23,10 @@ import { ProductsModule } from './products/products.module';
       serviceName: 'bdteste',
       username: 'teste',
       password: 'testekzt01',
-      synchronize: true,
+      synchronize: false,
       name: 'test',
       //entities: ['./src/**/entities/**.entity.ts'],
-      entities: [Product],
+      entities: [Product, Embalagem, Estoque],
       logging: true,
     }),
     TypeOrmModule.forRoot({
@@ -32,12 +36,14 @@ import { ProductsModule } from './products/products.module';
       username: 'root',
       password: '123456',
       database: 'empr',
-      entities: [GroupEntity, UserEntity],
+      entities: [GroupEntity, UserEntity, Product],
       synchronize: true,
       logging: true,
     }),
     GroupsModule,
     ProductsModule,
+    EmbalagensModule,
+    EstoqueModule,
   ],
   controllers: [AppController],
   providers: [AppService],
