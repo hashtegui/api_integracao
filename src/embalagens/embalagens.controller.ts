@@ -1,4 +1,11 @@
-import { Controller, Get, Query, Param } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Query,
+  Param,
+  HttpException,
+  HttpStatus,
+} from '@nestjs/common';
 import { EmbalagensService } from './embalagens.service';
 
 @Controller('embalagens')
@@ -10,6 +17,9 @@ export class EmbalagensController {
     @Query('codbarras') codbarras: number,
     @Query('filial_id') filial_id: number,
   ) {
+    if (!codbarras || !filial_id) {
+      throw new HttpException('', HttpStatus.BAD_REQUEST);
+    }
     return await this.embalagensService.pesquisarPorCodBarrasEFilial(
       codbarras,
       filial_id,
