@@ -1,11 +1,5 @@
-import {
-  Controller,
-  Get,
-  Query,
-  Param,
-  HttpException,
-  HttpStatus,
-} from '@nestjs/common';
+import { Controller, Get, Query, Param } from '@nestjs/common';
+import { ReadEmbalagemDto } from './dto/read-embalagem.dto';
 import { EmbalagensService } from './embalagens.service';
 
 @Controller('embalagens')
@@ -14,15 +8,12 @@ export class EmbalagensController {
 
   @Get()
   async findOnePorCod(
-    @Query('codbarras') codbarras: number,
-    @Query('filial_id') filial_id: number,
+    @Query()
+    query: ReadEmbalagemDto,
   ) {
-    if (!codbarras || !filial_id) {
-      throw new HttpException('', HttpStatus.BAD_REQUEST);
-    }
     return await this.embalagensService.pesquisarPorCodBarrasEFilial(
-      codbarras,
-      filial_id,
+      query.codbarras,
+      query.filial_id,
     );
   }
 
