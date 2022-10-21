@@ -1,6 +1,4 @@
 import { Injectable } from '@nestjs/common';
-import { HttpStatus } from '@nestjs/common/enums';
-import { HttpException } from '@nestjs/common/exceptions';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Embalagem } from './entities/embalagem.entity';
@@ -20,18 +18,20 @@ export class EmbalagensService {
     return embalagens;
   }
 
-  findEmbalagemPorFilial(id: number, filial_id: number): Promise<Embalagem[]> {
+  findEmbalagemPorFilial(
+    product_id: number,
+    filial_id: number,
+  ): Promise<Embalagem[]> {
     const embalagens = this.repo.find({
       relations: {
         estoque: true,
       },
       where: {
-        product_id: id,
+        product_id: product_id,
         filial_id: filial_id,
         estoque: { filial_id: filial_id },
       },
     });
-
     return embalagens;
   }
 
@@ -47,12 +47,6 @@ export class EmbalagensService {
         estoque: { filial_id: filial_id },
       },
     });
-    if (!embalagem) {
-      throw new HttpException(
-        'The package with this id cannot be found',
-        HttpStatus.NOT_FOUND,
-      );
-    }
     return embalagem;
   }
 }

@@ -1,6 +1,6 @@
-import { IsNumber, IsNotEmpty } from 'class-validator';
+import { IsNotEmpty, IsNumber } from 'class-validator';
 
-export class ReadEmbalagemDto {
+export class ReadEmbalagemByIdDto {
   @IsNotEmpty()
   @IsNumber()
   filial_id: number;
