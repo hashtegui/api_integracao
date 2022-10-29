@@ -14,6 +14,8 @@ import { EstoqueModule } from './estoque/estoque.module';
 import { Estoque } from './estoque/entities/estoque.entity';
 import { EmprsModule } from './emprs/emprs.module';
 import { Empr } from './emprs/entities/empr.entity';
+import { PrecosModule } from './precos/precos.module';
+import { Preco } from './precos/entities/preco.entity';
 
 @Module({
   imports: [
@@ -28,7 +30,7 @@ import { Empr } from './emprs/entities/empr.entity';
       synchronize: false,
       name: 'test',
       //entities: ['./src/**/entities/**.entity.ts'],
-      entities: [Product, Embalagem, Estoque, Empr],
+      entities: [Product, Embalagem, Estoque, Empr, Preco],
       logging: true,
     }),
     TypeOrmModule.forRoot({
@@ -47,6 +49,7 @@ import { Empr } from './emprs/entities/empr.entity';
     EmbalagensModule,
     EstoqueModule,
     EmprsModule,
+    PrecosModule,
   ],
   controllers: [AppController],
   providers: [AppService],

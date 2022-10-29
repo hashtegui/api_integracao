@@ -13,15 +13,15 @@ import { UpdateEmprDto } from './dto/update-empr.dto';
 
 @Controller('emprs')
 export class EmprsController {
-  constructor(private readonly emprsService: EmprsService) {}
+  constructor(private readonly service: EmprsService) {}
 
   @Get()
   async findAll() {
-    return await this.emprsService.findAll();
+    return await this.service.findAll();
   }
 
   @Get(':id')
   async findOne(@Param('id') id: string) {
-    return await this.emprsService.findOne(+id);
+    return await this.service.findOne(+id);
   }
 }
