@@ -1,4 +1,5 @@
 import { Estoque } from 'src/estoque/entities/estoque.entity';
+import { Preco } from 'src/precos/entities/preco.entity';
 import { Entity, JoinColumn, OneToMany, PrimaryColumn } from 'typeorm';
 
 export interface EmbalagemProps {
@@ -22,4 +23,8 @@ export class Embalagem implements EmbalagemProps {
   @OneToMany(() => Estoque, (emb) => emb.embalagem)
   @JoinColumn({ name: 'CODPROD' })
   estoque: Estoque[];
+
+  @OneToMany(() => Preco, (preco) => preco.embalagem)
+  @JoinColumn({ name: 'CODPROD' })
+  preco: Preco[];
 }
