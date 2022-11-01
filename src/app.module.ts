@@ -40,7 +40,7 @@ import { Preco } from './precos/entities/preco.entity';
       username: 'root',
       password: '123456',
       database: 'empr',
-      entities: [GroupEntity, UserEntity, Product],
+      entities: [GroupEntity, UserEntity],
       synchronize: true,
       logging: true,
     }),

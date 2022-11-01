@@ -53,7 +53,7 @@ export class EmbalagensService {
   ): Promise<Embalagem> {
     const numRegiao = this.retornaRegiao(filial_id);
     const embalagem = this.repo.findOne({
-      relations: ['estoque', 'preco'],
+      relations: ['estoque', 'preco', 'produto'],
       where: {
         codbarras: codbarras,
         filial_id: filial_id,

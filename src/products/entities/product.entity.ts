@@ -1,4 +1,12 @@
-import { Column, Entity, Index, PrimaryGeneratedColumn } from 'typeorm';
+import { Embalagem } from 'src/embalagens/entities/embalagem.entity';
+import {
+  Column,
+  Entity,
+  Index,
+  JoinColumn,
+  OneToMany,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 
 export interface ProductProps {
   product_id?: number;
@@ -36,4 +44,7 @@ export class Product implements ProductProps {
   idCat: number;
   @Column({ name: 'CODFORNEC', nullable: false })
   fornec_id: number;
+  @OneToMany(() => Embalagem, (emb) => emb.produto)
+  @JoinColumn({ name: 'CODPROD' })
+  embalagens: Embalagem[];
 }

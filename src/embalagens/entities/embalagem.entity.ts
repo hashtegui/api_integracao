@@ -1,6 +1,14 @@
 import { Estoque } from 'src/estoque/entities/estoque.entity';
 import { Preco } from 'src/precos/entities/preco.entity';
-import { Entity, JoinColumn, OneToMany, PrimaryColumn } from 'typeorm';
+import { Product } from 'src/products/entities/product.entity';
+import {
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  OneToMany,
+  OneToOne,
+  PrimaryColumn,
+} from 'typeorm';
 
 export interface EmbalagemProps {
   product_id: number;
@@ -20,11 +28,15 @@ export class Embalagem implements EmbalagemProps {
   @PrimaryColumn({ name: 'CODFILIAL' })
   filial_id: number;
 
-  @OneToMany(() => Estoque, (emb) => emb.embalagem)
+  @OneToOne(() => Estoque, (emb) => emb.embalagem)
   @JoinColumn({ name: 'CODPROD' })
-  estoque: Estoque[];
+  estoque: Estoque;
 
-  @OneToMany(() => Preco, (preco) => preco.embalagem)
+  @OneToOne(() => Preco, (preco) => preco.embalagem.product_id)
   @JoinColumn({ name: 'CODPROD' })
-  preco: Preco[];
+  preco: Preco;
+
+  @ManyToOne(() => Product, (prod) => prod.embalagens)
+  @JoinColumn({ name: 'CODPROD' })
+  produto: Product;
 }

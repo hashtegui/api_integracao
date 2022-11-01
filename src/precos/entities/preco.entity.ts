@@ -1,5 +1,5 @@
 import { Embalagem } from 'src/embalagens/entities/embalagem.entity';
-import { Column, Entity, JoinColumn, ManyToOne, PrimaryColumn } from 'typeorm';
+import { Column, Entity, JoinColumn, OneToOne, PrimaryColumn } from 'typeorm';
 
 @Entity({ name: 'PCTABPR', synchronize: false })
 export class Preco {
@@ -15,7 +15,7 @@ export class Preco {
   ptabelaatac: number;
   @Column({ name: 'PVENDAATAC' })
   pvendaatac: number;
-  @ManyToOne(() => Embalagem)
+  @OneToOne(() => Embalagem, (emb) => emb.preco)
   @JoinColumn({ name: 'CODPROD' })
   embalagem: Embalagem;
 }
